@@ -3,7 +3,7 @@ from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
 my_url = {"Chaussures de running" : "https://store.nike.com/fr/fr_fr/pw/homme-v%C3%AAtements/1mdZ7pu?ipp=120",
           "CHAUSSURES DE FOOTBALL" : "https://store.nike.com/fr/fr_fr/pw/homme-compression-nike-pro/7puZobn"}
-def selection(gride , grides , x):
+def selection(gride , x):
     i = 1
     for gride in grides :
         #print('_________/',i,'\________')
