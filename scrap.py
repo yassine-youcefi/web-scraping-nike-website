@@ -11,12 +11,15 @@ def selection(gride , x):
         product_colors = gride.div.div.text
 
         product_info = gride.findAll('div' ,{"class" : "product-name"})
+        
         #nom de produit
         product_n = product_info[0].findAll('p' , {"class" : "product-display-name"})
         product_name = product_n[0].text
+        
         #discription sur le produit
         product_d = product_info[0].findAll('p' , {"class" : "product-subtitle"})
         product_discription = product_d[0].text
+        
         #prix de produit
         product_price1 = gride.findAll('div' ,{"class" : "product-price"})
         product_price2 = product_price1[0].findAll("span" , {"class" : "local"})
