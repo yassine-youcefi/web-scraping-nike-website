@@ -1,6 +1,6 @@
 ## web scraping :
 
-Extract all products from the [**Nike**](https://store.nike.com/fr/fr_fr/) site and save them in a file.csv :
+Extract all products from the [**Nike**](https://store.nike.com/fr/fr_fr/) site and save them in a file.csv and file.json :
 ***
 The file [data.csv](https://github.com/yani27/web-scraping-nike-website/blob/master/data.csv) contains the extracted data. 
 ***
