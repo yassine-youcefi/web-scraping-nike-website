@@ -3,12 +3,22 @@ import json
 from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
 
+import os 
+BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
+CSV_FILE = os.path.join(BASE_DIRECTORY, 'data_csv.csv')
+JSON_FILE = os.path.join(BASE_DIRECTORY, 'data_json.json')
+
+
 my_url = {"Chaussures de running" : "https://store.nike.com/fr/fr_fr/pw/homme-v%C3%AAtements/1mdZ7pu?ipp=120",
           "CHAUSSURES DE FOOTBALL" : "https://store.nike.com/fr/fr_fr/pw/homme-compression-nike-pro/7puZobn"}
-data_json = {}
-def selection(gride,grides , x):
-    i = 1
+
+data_json = []
+data_csv = "name_product,discription_product,colors_product,price_product,catégorie\n"
+
+def selection(grides , x):
+    global data_csv, data_json
     
+    i = 1
     for gride in grides :
         #print('_________/',i,'\________')
         #couleur de produit
@@ -34,27 +44,20 @@ def selection(gride,grides , x):
         #print(product_colors)
         #print(product_price)
         
-        f1.write(product_name +' , '+ product_discription +' , '+ product_colors +' , '+ product_price.replace(',','.') + ' , ' + x + '\n')    
+        data_csv = data_csv + "{},{},{},{},{}\n".format (
+            product_name, product_discription, product_colors, product_price.replace(',','.'), x
+        )
+  
+        data_json += [{"name" : product_name , "discription" : product_discription , "colors" : product_colors , "price" : product_price}]
         
-        data_json={"name" : product_name , "discription" : product_discription , "colors" : product_colors , "price" : product_price}
-        json.dump(data_json, f2, ensure_ascii=False)
-        if i < len(grides):
-            f2.write(',')
+        # if i < len(grides):
+        #     data_csv =  data_csv + ','
         i += 1
 
 
 if __name__ == '__main__':
 
-    file_name1 = 'data_csv.csv'
-    f1 = open(file_name1 , 'w')
-    headers = "name_product , discription_product , colors_product , price_product , catégorie\n"
-    f1.write(headers)
-
-    file_name2 = 'data_json.json'
-    f2 = open(file_name2 , 'w')
-    f2.write('{')
     for x in my_url :
-        
         uclient = ureq(my_url[x])
         page_html = uclient.read()
         uclient.close()
@@ -62,18 +65,12 @@ if __name__ == '__main__':
         grides = pagesoup.findAll("div" , {"class" : "grid-item-info"})
         print('cotégorie de produits = ', x )
         print('num de produits = ',len(grides))
-        gride = grides[0]
-    
-        json.dump(x , f2, ensure_ascii=False)
-        f2.write(':')
-        f2.write('[')
-        selection(gride,grides , x)
-        f2.write(']')
-    
-        if len(my_url) > 1 :
-            f2.write(',')
-    
-    f1.close()
-    f2.write('}')
-    f2.close()    
-    print(type(data_json))
+
+        selection(grides , x)
+
+    #file save
+    with open(CSV_FILE, 'w') as csv_f:
+        csv_f.write(data_csv)
+
+    with open(JSON_FILE, 'w') as json_f:
+        json_f.write(json.dumps(data_json)+'\n')
