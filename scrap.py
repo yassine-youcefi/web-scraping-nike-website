@@ -1,10 +1,14 @@
 import bs4
+import json
 from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
+
 my_url = {"Chaussures de running" : "https://store.nike.com/fr/fr_fr/pw/homme-v%C3%AAtements/1mdZ7pu?ipp=120",
           "CHAUSSURES DE FOOTBALL" : "https://store.nike.com/fr/fr_fr/pw/homme-compression-nike-pro/7puZobn"}
-def selection(gride , x):
+data_json = {}
+def selection(gride,grides , x):
     i = 1
+    
     for gride in grides :
         #print('_________/',i,'\________')
         #couleur de produit
@@ -30,17 +34,25 @@ def selection(gride , x):
         #print(product_colors)
         #print(product_price)
         
-        f.write(product_name +' , '+ product_discription +' , '+ product_colors +' , '+ product_price.replace(',','.') + ' , ' + x + '\n')    
+        f1.write(product_name +' , '+ product_discription +' , '+ product_colors +' , '+ product_price.replace(',','.') + ' , ' + x + '\n')    
+        
+        data_json={"name" : product_name , "discription" : product_discription , "colors" : product_colors , "price" : product_price}
+        json.dump(data_json, f2, ensure_ascii=False)
+        if i < len(grides):
+            f2.write(',')
         i += 1
 
 
 if __name__ == '__main__':
 
-    file_name = 'data.csv'
-    f = open(file_name , 'w')
+    file_name1 = 'data_csv.csv'
+    f1 = open(file_name1 , 'w')
     headers = "name_product , discription_product , colors_product , price_product , catégorie\n"
-    f.write(headers)
+    f1.write(headers)
 
+    file_name2 = 'data_json.json'
+    f2 = open(file_name2 , 'w')
+    f2.write('{')
     for x in my_url :
         
         uclient = ureq(my_url[x])
@@ -51,9 +63,17 @@ if __name__ == '__main__':
         print('cotégorie de produits = ', x )
         print('num de produits = ',len(grides))
         gride = grides[0]
-
-        selection(gride , grides , x)
     
-    f.close()
-        
+        json.dump(x , f2, ensure_ascii=False)
+        f2.write(':')
+        f2.write('[')
+        selection(gride,grides , x)
+        f2.write(']')
     
+        if len(my_url) > 1 :
+            f2.write(',')
+    
+    f1.close()
+    f2.write('}')
+    f2.close()    
+    print(type(data_json))
