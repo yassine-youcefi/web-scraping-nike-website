@@ -4,7 +4,7 @@ web scraping nike products frome [**nike**](https://store.nike.com/fr/fr_fr) and
 ***
 the file [**data_csv.csv**](https://github.com/yani27/web-scraping-nike-website/blob/master/data_csv.csv) contain csv results
 ***
-the file **data_json.json**(https://github.com/yani27/web-scraping-nike-website/blob/master/data_json.json) contain json results
+the file [**data_json.json**](https://github.com/yani27/web-scraping-nike-website/blob/master/data_json.json) contain json results
 ***
 ## for use :
 ### 1. Enter a folder that contains scrap.py with terminal
