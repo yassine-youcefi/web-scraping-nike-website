@@ -2,7 +2,7 @@ import bs4
 from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
 
-my_url = "https://store.nike.com/fr/fr_fr/pw/homme-compression-nike-pro/7puZobn"
+my_url = "https://store.nike.com/fr/fr_fr/pw/fille-chaussures/7pwZoi3?ipp=270"
 
 uclient = ureq(my_url)
 page_html = uclient.read()
