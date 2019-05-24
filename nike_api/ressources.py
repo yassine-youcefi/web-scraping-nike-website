@@ -1,9 +1,9 @@
 from flask_restful import Resource,reqparse
-from models import UserModel
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
-from flask import jsonify
-import run
-import nike_data as nd
+from models import UserModel,RevokedTokenModel
+from flask_jwt_extended import (create_access_token,create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask import jsonify,request
+import run,json,os
+
 parser = reqparse.RequestParser()
 parser.add_argument('username', help = 'This field cannot be blank', required = True)
 parser.add_argument('password', help = 'This field cannot be blank', required = True)
@@ -12,7 +12,6 @@ parser.add_argument('password', help = 'This field cannot be blank', required = 
 
 class UserRegistration(Resource):
     def post(self):
-        data = parser.parse_args()
         data = parser.parse_args()
 
         if UserModel.find_by_username(data['username']):
@@ -27,18 +26,16 @@ class UserRegistration(Resource):
             refresh_token = create_refresh_token(identity = data['username'])
 
             return {
+                'code':201,
                 'message': 'User {} was created'.format(data['username']),
                 'access_token': access_token
                 }
-
-            return {
-                'message': 'User {} was created'.format( data['username'])
-            }
         except:
             return {'message': 'Something went wrong'}, 500
 
 class UserLogin(Resource):
     def post(self):
+        data = parser.parse_args()
         data = parser.parse_args()
         current_user = UserModel.find_by_username(data['username'])
         if not current_user:
@@ -55,6 +52,36 @@ class UserLogin(Resource):
             return {'message': 'Wrong credentials'}
 
 
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity = current_user)
+        return {'access_token': access_token}
+
+class UserLogoutAccess(Resource):
+    @jwt_required
+    def post(self):
+        jti = get_raw_jwt()['jti']
+        try:
+            revoked_token = RevokedTokenModel(jti = jti)
+            revoked_token.add()
+            return {'message': 'Access token has been revoked'}
+        except:
+            return {'message': 'Something went wrong'}, 500
+class UserLogoutRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        jti = get_raw_jwt()['jti']
+        try:
+            revoked_token = RevokedTokenModel(jti = jti)
+            revoked_token.add()
+            return {'message': 'Refresh token has been revoked'}
+        except:
+            return {'message': 'Something went wrong'}, 500
+
+
+
 class AllUsers(Resource):
     def get(self):
         return UserModel.return_all()
@@ -67,11 +94,36 @@ class AllUsers(Resource):
 
 class Chaussures(Resource):
     @jwt_required
-    @run.cache.cached(timeout=2000)
+    @run.cache.cached(timeout=5)
     def post(self):
-        return {
-            "homme":nd.getNikeData('https://store.nike.com/fr/fr_fr/pw/homme-chaussures/7puZoi3'),
-            "femme":nd.getNikeData('https://store.nike.com/fr/fr_fr/pw/femme-chaussures/7ptZoi3'),
-            "garcon":nd.getNikeData('https://store.nike.com/fr/fr_fr/pw/gar%C3%A7on-chaussures/7pvZoi3'),
-            "fille":nd.getNikeData('https://store.nike.com/fr/fr_fr/pw/fille-chaussures/7pwZoi3')
-        }
+        return {"code":200,"msg":"found","data":[run.data[0]]}
+
+class ChaussParType(Resource):
+    @jwt_required
+    @run.cache.cached(timeout=5)
+    def post(self,types):
+        category = request.args.get('category')
+        minPrice = request.args.get('minPrice')
+        maxPrice = request.args.get('maxPrice')
+        productName = request.args.get('productName')
+        price = request.args.get('price')
+        
+        try:
+            data = run.data[0][types][0]["chaussures"]
+            if productName:
+                data = [p for p in data if productName.lower() in p['productName'].lower()]
+            if category:
+                data = [p for p in data if p['category'] == category]
+            if minPrice:
+                data = [p for p in data if float(p['price'].replace(',','.').split(' ')[0]) >= float(minPrice)]
+            if maxPrice:
+                data = [p for p in data if float(p['price'].replace(',','.').split(' ')[0]) <= float(maxPrice)]
+            if price and maxPrice == None and minPrice == None:
+                data = [p for p in data if float(p['price'].replace(',','.').split(' ')[0]) == float(price)]
+            elif price != None:
+                return {"code":400,"msg":"Bad Request"}
+            return {"code":200,"msg":"found","data":data}
+            
+        except KeyError:
+            return {"code":400,"msg":"Bad Request"}
+        
