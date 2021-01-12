@@ -5,6 +5,10 @@ import json
 import os
 from bs4 import BeautifulSoup
 
+#pip install virtualenv
+#source venv/bin/activate
+#pip3 install -r requirements.txt
+
 url = 'https://www.ouedkniss.com/store/?id=2537'
 
 BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
