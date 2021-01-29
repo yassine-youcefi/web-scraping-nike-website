@@ -22,53 +22,55 @@ def selection(grides, x):
     global data_csv, data_json
 
     i = 1
-    for gride in grides:
-        # print('_________/',i,'\________')
-        # couleur de produit
-        product_c = gride.findAll(
-            'div', {"class": "product-card__product-count"})
+    try:
+        for gride in grides:
+            # print('_________/',i,'\________')
+            # couleur de produit
+            product_c = gride.findAll(
+                'div', {"class": "product-card__product-count"})
 
-        product_colors = product_c[0].text
-        print("products color", product_c[0].text)
+            product_colors = product_c[0].text
+            print("products color", product_c[0].text)
 
-        product_info = gride.findAll(
-            'div', {"class": "product-card__info for--product disable-animations"})
-        print("products infos", product_info[0].text)
+            try:
+                # nom de produit
+                product_n = gride.findAll(
+                    'div', {"class": "product-card__titles"})
 
-        # nom de produit
-        product_n = product_info[0].findAll(
-            'div', {"class": "product-card__titles"})
-        print('product-n', product_n[0].text)
+                product_name = product_n[0].text
+                print('product name ', product_name)
 
-        product_name = product_n[0].text
+                # discription sur le produit
+                product_d = gride.findAll(
+                    'div', {"class": "product-card__subtitle"})
+                product_discription = product_d[0].text
 
-        print('product dispaly name ', product_name)
+                print("discription ", product_discription)
+                # prix de produit
 
-        # discription sur le produit
-        product_d = product_info[0].findAll('p', {"class": "product-subtitle"})
-        product_discription = product_d[0].text
+                product_price1 = gride.findAll(
+                    'div', {"class": "product-price css-11s12ax is--current-price"})
+                product_price = product_price1[0].text
 
-        # prix de produit
-        product_price1 = gride.findAll('div', {"class": "product-price"})
-        product_price2 = product_price1[0].findAll("span", {"class": "local"})
-        product_price = product_price2[0].text
+                # print(product_name)
+                # print(product_discription)
+                # print(product_colors)
+                print("price ", product_price)
 
-        # print(product_name)
-        # print(product_discription)
-        # print(product_colors)
-        # print(product_price)
+            except:
+                product_name = ""
+                product_price = ""
+                product_discription = ""
 
-        data_csv = data_csv + "{},{},{},{},{}\n".format(
-            product_name, product_discription, product_colors, product_price.replace(
-                ',', '.'), x
-        )
-
-        data_json += [{"name": product_name, "discription": product_discription,
-                       "colors": product_colors, "price": product_price}]
-
-        # if i < len(grides):
-        #     data_csv =  data_csv + ','
-        i += 1
+            data_csv = data_csv + "{},{},{},{},{}\n".format(
+                product_name, product_discription, product_colors, product_price.replace(
+                    ',', '.'), x
+            )
+            data_json += [{"name": product_name, "discription": product_discription,
+                           "colors": product_colors, "price": product_price}]
+            i += 1
+    except:
+        print('ERROR')
 
 
 if __name__ == '__main__':
