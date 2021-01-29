@@ -25,20 +25,20 @@ def selection(grides, x):
     for gride in grides:
         # print('_________/',i,'\________')
         # couleur de produit
-        product_colors = gride.findAll(
+        product_c = gride.findAll(
             'div', {"class": "product-card__product-count"})
 
-        print("products color", product_colors[0].text)
+        product_colors = product_c[0].text
+        print("products color", product_c[0].text)
 
         product_info = gride.findAll(
-            'div', {"class": "product-card__title"})
-
+            'div', {"class": "product-card__info for--product disable-animations"})
         print("products infos", product_info[0].text)
 
         # nom de produit
         product_n = product_info[0].findAll(
-            'p', {"class": "product-card__titles"})
-        print('product-n', product_n)
+            'div', {"class": "product-card__titles"})
+        print('product-n', product_n[0].text)
 
         product_name = product_n[0].text
 
