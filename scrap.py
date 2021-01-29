@@ -35,12 +35,10 @@ def urls(url):
 
 def selection(grides, x):
     global data_csv, data_json
-
-    i = 1
     try:
         for gride in grides:
-            # print('_________/',i,'\________')
-            # couleur de produit
+
+            # product number colors
             product_c = gride.findAll(
                 'div', {"class": "product-card__product-count"})
 
@@ -48,28 +46,24 @@ def selection(grides, x):
             print("products color", product_c[0].text)
 
             try:
-                # nom de produit
+                # product name
                 product_n = gride.findAll(
                     'div', {"class": "product-card__titles"})
 
                 product_name = product_n[0].text
                 print('product name ', product_name)
 
-                # discription sur le produit
+                # product description
                 product_d = gride.findAll(
                     'div', {"class": "product-card__subtitle"})
                 product_discription = product_d[0].text
 
                 print("discription ", product_discription)
-                # prix de produit
 
+                # product price
                 product_price1 = gride.findAll(
                     'div', {"class": "product-price css-11s12ax is--current-price"})
                 product_price = product_price1[0].text
-
-                # print(product_name)
-                # print(product_discription)
-                # print(product_colors)
                 print("price ", product_price)
 
             except:
@@ -83,7 +77,6 @@ def selection(grides, x):
             )
             data_json += [{"name": product_name, "discription": product_discription,
                            "colors": product_colors, "price": product_price}]
-            i += 1
     except:
         print('ERROR')
 
