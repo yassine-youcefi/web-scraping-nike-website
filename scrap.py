@@ -11,11 +11,26 @@ BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 CSV_FILE = os.path.join(BASE_DIRECTORY, 'data_csv.csv')
 JSON_FILE = os.path.join(BASE_DIRECTORY, 'data_json.json')
 
-
-my_url = {"Chaussures de foot": "https://www.nike.com/ma/en/w/mens-football-shoes-1gdj0znik1zy7ok"}
-
 data_json = []
 data_csv = "name_product,discription_product,colors_product,price_product,catégorie\n"
+
+
+my_url = {}
+url = ["https://www.nike.com/ma/en/w/mens-football-shoes-1gdj0znik1zy7ok",
+       "https://www.nike.com/ma/en/w/mens-jordan-shoes-37eefznik1zy7ok"]
+
+
+def urls(url):
+    global my_url
+    for u in url:
+        cat = requests.get(u)
+        soup2 = soup(cat.text, 'html.parser')
+
+        categorie_soup = soup2.findAll(
+            "h1", {"class": "wall-header__title css-hrsjq4 css-7m6ucd css-yj4gxb"})
+        categorie = categorie_soup[0].text
+        my_url.update({categorie: u})
+    print('my_url ', my_url)
 
 
 def selection(grides, x):
@@ -75,25 +90,23 @@ def selection(grides, x):
 
 if __name__ == '__main__':
 
-    for x in my_url:
-        uclient = requests.get(my_url[x])
-        # page_html = uclient.read()
-        # uclient.close()
-        soup2 = soup(uclient.text, 'html.parser')
+    # for x in my_url:
+    #     uclient = requests.get(my_url[x])
+    #     soup2 = soup(uclient.text, 'html.parser')
 
-        print('-----------', uclient)
-        pagesoup = soup(uclient.text, "html.parser")
-        grides = pagesoup.findAll(
-            "div", {"class": "product-card__body"})
+    #     pagesoup = soup(uclient.text, "html.parser")
+    #     grides = pagesoup.findAll(
+    #         "div", {"class": "product-card__body"})
 
-        print('cotégorie de produits = ', x)
-        print('num de produits = ', len(grides))
+    #     print('cotégorie de produits = ', x)
+    #     print('num de produits = ', len(grides))
 
-        selection(grides, x)
+    #     selection(grides, x)
 
-    # file save
-    with open(CSV_FILE, 'w') as csv_f:
-        csv_f.write(data_csv)
+    # # file save
+    # with open(CSV_FILE, 'w') as csv_f:
+    #     csv_f.write(data_csv)
 
-    with open(JSON_FILE, 'w') as json_f:
-        json_f.write(json.dumps(data_json)+'\n')
+    # with open(JSON_FILE, 'w') as json_f:
+    #     json_f.write(json.dumps(data_json)+'\n')
+    urls(url)
