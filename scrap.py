@@ -1,7 +1,7 @@
 import bs4
 import json
 import requests
-
+import re
 from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
 
@@ -46,6 +46,12 @@ def selection(grides, x):
             print("products color", product_c[0].text)
 
             try:
+                # product image
+                images = gride.find_all('img', {'src': re.compile('.jpg')})
+                for image in images:
+                    print(image['src']+'\n')
+                    product_image = image['src']
+
                 # product name
                 product_n = gride.findAll(
                     'div', {"class": "product-card__titles"})
@@ -71,11 +77,11 @@ def selection(grides, x):
                 product_price = ""
                 product_discription = ""
 
-            data_csv = data_csv + "{},{},{},{},{}\n".format(
-                product_name, product_discription, product_colors, product_price.replace(
+            data_csv = data_csv + "{},{},{},{},{},{}\n".format(
+                product_image, product_name, product_discription, product_colors, product_price.replace(
                     ',', '.'), x
             )
-            data_json += [{"name": product_name, "discription": product_discription,
+            data_json += [{"name": product_name, "image": product_image, "discription": product_discription,
                            "colors": product_colors, "price": product_price}]
     except:
         print('ERROR')
