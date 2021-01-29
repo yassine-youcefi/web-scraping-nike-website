@@ -89,24 +89,24 @@ def selection(grides, x):
 
 
 if __name__ == '__main__':
-
-    # for x in my_url:
-    #     uclient = requests.get(my_url[x])
-    #     soup2 = soup(uclient.text, 'html.parser')
-
-    #     pagesoup = soup(uclient.text, "html.parser")
-    #     grides = pagesoup.findAll(
-    #         "div", {"class": "product-card__body"})
-
-    #     print('cotégorie de produits = ', x)
-    #     print('num de produits = ', len(grides))
-
-    #     selection(grides, x)
-
-    # # file save
-    # with open(CSV_FILE, 'w') as csv_f:
-    #     csv_f.write(data_csv)
-
-    # with open(JSON_FILE, 'w') as json_f:
-    #     json_f.write(json.dumps(data_json)+'\n')
     urls(url)
+    for x in my_url:
+        print('my_url', my_url)
+        uclient = requests.get(my_url[x])
+        soup2 = soup(uclient.text, 'html.parser')
+
+        pagesoup = soup(uclient.text, "html.parser")
+        grides = pagesoup.findAll(
+            "div", {"class": "product-card__body"})
+
+        print('cotégorie de produits = ', x)
+        print('num de produits = ', len(grides))
+
+        selection(grides, x)
+
+    # file save
+    with open(CSV_FILE, 'w') as csv_f:
+        csv_f.write(data_csv)
+
+    with open(JSON_FILE, 'w') as json_f:
+        json_f.write(json.dumps(data_json)+'\n')
