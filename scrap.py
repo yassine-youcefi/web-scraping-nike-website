@@ -93,6 +93,16 @@ def selection(grides, x):
                 product_price = ""
                 product_discription = ""
 
+            test_df = pd.DataFrame({'product': product_name,
+                                    'price': product_price,
+                                    'discription': product_discription,
+                                    'colors': product_colors,
+                                    'image': product_image
+                                    })
+
+            print(test_df.info())
+            test_df
+
             data_csv = data_csv + "{},{},{},{},{},{}\n".format(
                 product_image, product_name, product_discription, product_colors, product_price.replace(
                     ',', '.'), x
