@@ -1,4 +1,5 @@
 from IPython.core.display import clear_output
+from warnings import warnwarn
 import time
 import bs4
 import json
@@ -8,6 +9,7 @@ from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
 from time import sleep
 from random import randint
+import pandas as pd
 
 import os
 BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
