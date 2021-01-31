@@ -1,4 +1,5 @@
 from IPython.core.display import clear_output
+import time
 import bs4
 import json
 import requests
@@ -7,21 +8,21 @@ from urllib.request import urlopen as ureq
 from bs4 import BeautifulSoup as soup
 from time import sleep
 from random import randint
-from time import timestart_time = time()
 
 import os
 BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 CSV_FILE = os.path.join(BASE_DIRECTORY, 'data_csv.csv')
 JSON_FILE = os.path.join(BASE_DIRECTORY, 'data_json.json')
-
-start_time = time()requests = 0
+timestart_time = time.time()
+start_time = time.time()
+request = 0
 for _ in range(5):
     # A request would go here
-    requests += 1
+    request += 1
     sleep(randint(1, 3))
-    current_time = time()
+    current_time = time.time()
     elapsed_time = current_time - start_time
-    print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
+    print('Request: {}; Frequency: {} requests/s'.format(request, request/elapsed_time))
 clear_output(wait=True)
 
 data_json = []
