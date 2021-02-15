@@ -32,95 +32,103 @@ def getStorUrls(my_url):
         link = gride.a.get('href')
         proto = "https://www.ouedkniss.com/"
         link = proto + link
-        store_url +=[{"url":link}]
         l.append(link)
+    store_url +=[{"url":l}]
+
     
 
 # get store urls and save them in store_urls.json
-# getStorUrls(url)
-# print("store url  \n",store_url)
+getStorUrls(url)
+print("store url  \n",store_url)
 
-# with open(STORE_URLS, 'w') as json_f:
-#     json_f.write(json.dumps(store_url)+'\n')
-
-for i in range(len(k)):
-    print("k[i] =\n",k[i])
-
-    req2 = requests.get(k[i])
-
-l = "https://www.ouedkniss.com/vente-appartement-f2-alger-centre-algerie-immobilier-d24540614?"
-req2 = requests.get(l)
-soup2 = BeautifulSoup(req2.text, 'html.parser')
-
-# extrai nom d'article
-article_titre = soup2.h1.text
-print(article_titre)
-container = soup2.find("div", {"id": "Description"})
+with open(STORE_URLS, 'w') as json_f:
+    json_f.write(json.dumps(store_url)+'\n')
 
 
-# extrai nombre de vues
-disc = container.findAll('span', {"class": "description_span"})
-nombre_vue = disc[1].text
-print(nombre_vue)
+# Opening store_urls JSON file 
+f = open('store_urls.json',) 
+# returns JSON object as  
+# a dictionary 
+data = json.load(f) 
 
-date = disc[2].text.encode('utf-8').strip()
-print(date)
+# for i in range(len(k)):
+#     print("k[i] =\n",k[i])
 
-# extrait quartier
-quart = container.find('p', {"id": "Quartier"})
-quartie = quart.span.text
-print(quartie)
+#     req2 = requests.get(k[i])
 
-# extrait nombre des piéces
-nb = container.find('p', {"id": "Nombre de pièces"})
-nombre_piece = nb.span.text
-print(nombre_piece)
+# l = "https://www.ouedkniss.com/vente-appartement-f2-alger-centre-algerie-immobilier-d24540614?"
+# req2 = requests.get(l)
+# soup2 = BeautifulSoup(req2.text, 'html.parser')
 
-# extrait nombre d'etage
-nbe = container.find('p', {"id": "Nombre d"})
-nombre_etage = nbe.span.text
-print(nombre_etage)
+# # extrai nom d'article
+# article_titre = soup2.h1.text
+# print(article_titre)
+# container = soup2.find("div", {"id": "Description"})
 
-# description
-descri = container.find('div', {"id": "GetDescription"})
-description = descri.text.encode('utf-8').strip()
-print(description)
 
-# Superficie
-sup = container.find('p', {"id": "Superficie"})
-superficie = sup.span.text.encode('utf-8').strip()
-print(superficie)
+# # extrai nombre de vues
+# disc = container.findAll('span', {"class": "description_span"})
+# nombre_vue = disc[1].text
+# print(nombre_vue)
 
-# prix
-pr = soup2.find("div", {"id": "espace_prix"})
-prix = pr.p.span.text.encode('utf-8').strip()
-print(prix)
+# date = disc[2].text.encode('utf-8').strip()
+# print(date)
 
-# membre_562700
-num = soup2.find("div", {"id": "membre_562700"})
-numero = num.p.a.text
-print(numero)
+# # extrait quartier
+# quart = container.find('p', {"id": "Quartier"})
+# quartie = quart.span.text
+# print(quartie)
 
-# save data
-data_csv = data_csv + "{},{},{},{},{},{},{},{},{}\n".format(
-    article_titre, nombre_vue, quartie, nombre_piece, nombre_etage, description, superficie, prix, numero.replace(
-        ',', '.'),
-)
+# # extrait nombre des piéces
+# nb = container.find('p', {"id": "Nombre de pièces"})
+# nombre_piece = nb.span.text
+# print(nombre_piece)
 
-data_json += [{"titre": article_titre,
-               "vues": nombre_vue,
-               "quartie": quartie,
-               "pieces": nombre_piece,
-               "etage": nombre_etage,
-               "descreptio": description,
-               "superficier": superficie,
-               "prix": prix,
-               "tel": numero}]
+# # extrait nombre d'etage
+# nbe = container.find('p', {"id": "Nombre d"})
+# nombre_etage = nbe.span.text
+# print(nombre_etage)
 
-# save in files
-with open(CSV_FILE, 'w') as csv_f:
-    csv_f.write(data_csv)
+# # description
+# descri = container.find('div', {"id": "GetDescription"})
+# description = descri.text.encode('utf-8').strip()
+# print(description)
 
-with open(JSON_FILE, 'w') as json_f:
-    json_f.write(json.dumps(data_json)+'\n')
+# # Superficie
+# sup = container.find('p', {"id": "Superficie"})
+# superficie = sup.span.text.encode('utf-8').strip()
+# print(superficie)
+
+# # prix
+# pr = soup2.find("div", {"id": "espace_prix"})
+# prix = pr.p.span.text.encode('utf-8').strip()
+# print(prix)
+
+# # membre_562700
+# num = soup2.find("div", {"id": "membre_562700"})
+# numero = num.p.a.text
+# print(numero)
+
+# # save data
+# data_csv = data_csv + "{},{},{},{},{},{},{},{},{}\n".format(
+#     article_titre, nombre_vue, quartie, nombre_piece, nombre_etage, description, superficie, prix, numero.replace(
+#         ',', '.'),
+# )
+
+# data_json += [{"titre": article_titre,
+#                "vues": nombre_vue,
+#                "quartie": quartie,
+#                "pieces": nombre_piece,
+#                "etage": nombre_etage,
+#                "descreptio": description,
+#                "superficier": superficie,
+#                "prix": prix,
+#                "tel": numero}]
+
+# # save in files
+# with open(CSV_FILE, 'w') as csv_f:
+#     csv_f.write(data_csv)
+
+# with open(JSON_FILE, 'w') as json_f:
+#     json_f.write(json.dumps(data_json)+'\n')
 
