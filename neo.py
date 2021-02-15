@@ -17,7 +17,7 @@ JSON_FILE = os.path.join(BASE_DIRECTORY, 'data_json.json')
 STORE_URLS = os.path.join(BASE_DIRECTORY, 'store_urls.json')
 
 data_json = []
-store_url = []
+store_url = {}
 data_csv = "titre, vue, quartie, pieces, etage, description, superficie, prix, numero\n"
 
 
@@ -33,23 +33,28 @@ def getStorUrls(my_url):
         proto = "https://www.ouedkniss.com/"
         link = proto + link
         l.append(link)
-    store_url +=[{"url":l}]
+    store_url={"url":l}
 
     
 
 # get store urls and save them in store_urls.json
-getStorUrls(url)
-print("store url  \n",store_url)
+#------------------------------------------------
+# getStorUrls(url)
+# print("store url  \n",store_url)
 
-with open(STORE_URLS, 'w') as json_f:
-    json_f.write(json.dumps(store_url)+'\n')
-
+# with open(STORE_URLS, 'w') as json_f:
+#     json_f.write(json.dumps(store_url)+'\n')
+#------------------------------------------------
 
 # Opening store_urls JSON file 
 f = open('store_urls.json',) 
 # returns JSON object as  
 # a dictionary 
 data = json.load(f) 
+
+for i in data['url']: 
+    print("url = {}".format(i)) 
+f.close()     
 
 # for i in range(len(k)):
 #     print("k[i] =\n",k[i])
