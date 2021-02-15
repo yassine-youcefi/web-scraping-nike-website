@@ -33,12 +33,12 @@ def getStorUrls(my_url):
     return l
 
 
-'''
+
 k = getStorUrls(url)
 for i in range(len(k)):
-     print(k[i])
-req2 = requests.get(k[i])
-'''
+    print(k[i])
+    req2 = requests.get(k[i])
+
 l = "https://www.ouedkniss.com/vente-appartement-f2-alger-centre-algerie-immobilier-d24540614?"
 req2 = requests.get(l)
 soup2 = BeautifulSoup(req2.text, 'html.parser')
