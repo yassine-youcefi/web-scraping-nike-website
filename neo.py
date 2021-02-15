@@ -32,14 +32,17 @@ def getStorUrls(my_url):
         link = gride.a.get('href')
         proto = "https://www.ouedkniss.com/"
         link = proto + link
+        store_url +=[{"url":link}]
         l.append(link)
-        store_url +=[{"url":l}]
-        print("store url \n",store_url)
-    return l
+    
 
 
-k = getStorUrls(url)
-print("k = \n",k)
+getStorUrls(url)
+print("store url  \n",store_url)
+
+with open(JSON_FILE, 'w') as json_f:
+    json_f.write(json.dumps(data_json)+'\n')
+
 # for i in range(len(k)):
 #     print("k[i] =\n",k[i])
 
