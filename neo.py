@@ -14,7 +14,7 @@ url = 'https://www.ouedkniss.com/store/?id=2537'
 BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 CSV_FILE = os.path.join(BASE_DIRECTORY, 'data_csv.csv')
 JSON_FILE = os.path.join(BASE_DIRECTORY, 'data_json.json')
-STORE_URL = os.path.join(BASE_DIRECTORY, 'store_url.json')
+STORE_URLS = os.path.join(BASE_DIRECTORY, 'store_urls.json')
 
 data_json = []
 store_url = []
@@ -32,7 +32,7 @@ def getStorUrls(my_url):
         link = gride.a.get('href')
         proto = "https://www.ouedkniss.com/"
         link = proto + link
-        store_url +=[{"url":link}]
+        store_url +=[{"url":link}+'\n']
         l.append(link)
     
 
@@ -40,8 +40,8 @@ def getStorUrls(my_url):
 getStorUrls(url)
 print("store url  \n",store_url)
 
-with open(JSON_FILE, 'w') as json_f:
-    json_f.write(json.dumps(data_json)+'\n')
+with open(STORE_URLS, 'w') as json_f:
+    json_f.write(json.dumps(store_url)+'\n')
 
 # for i in range(len(k)):
 #     print("k[i] =\n",k[i])
