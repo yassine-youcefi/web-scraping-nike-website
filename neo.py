@@ -22,6 +22,7 @@ data_csv = "titre, vue, quartie, pieces, etage, description, superficie, prix, n
 
 
 def getStorUrls(my_url):
+    global store_url
     req = requests.get(my_url)
     soup = BeautifulSoup(req.text, 'html.parser')
     grides = soup.findAll("li", {"class": "produit_titre"})
@@ -39,7 +40,7 @@ def getStorUrls(my_url):
 
 k = getStorUrls(url)
 for i in range(len(k)):
-    print(k[i])
+    print("k[i] =\n",k[i])
 
     req2 = requests.get(k[i])
 
