@@ -14,8 +14,10 @@ url = 'https://www.ouedkniss.com/store/?id=2537'
 BASE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 CSV_FILE = os.path.join(BASE_DIRECTORY, 'data_csv.csv')
 JSON_FILE = os.path.join(BASE_DIRECTORY, 'data_json.json')
+STORE_URL = os.path.join(BASE_DIRECTORY, 'store_url.json')
 
 data_json = []
+store_url = []
 data_csv = "titre, vue, quartie, pieces, etage, description, superficie, prix, numero\n"
 
 
@@ -30,13 +32,15 @@ def getStorUrls(my_url):
         proto = "https://www.ouedkniss.com/"
         link = proto + link
         l.append(link)
+        store_url +=[{"url":l}]
+        print("store url \n",store_url)
     return l
-
 
 
 k = getStorUrls(url)
 for i in range(len(k)):
     print(k[i])
+
     req2 = requests.get(k[i])
 
 l = "https://www.ouedkniss.com/vente-appartement-f2-alger-centre-algerie-immobilier-d24540614?"
@@ -114,3 +118,4 @@ with open(CSV_FILE, 'w') as csv_f:
 
 with open(JSON_FILE, 'w') as json_f:
     json_f.write(json.dumps(data_json)+'\n')
+
