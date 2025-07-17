@@ -50,4 +50,4 @@ typing-extensions==3.7.4.3
 urllib3==1.26.5
 wcwidth==0.2.5
 Werkzeug==1.0.1
-zipp==3.4.0
+zipp==3.19.1
