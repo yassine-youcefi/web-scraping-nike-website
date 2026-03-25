@@ -33,7 +33,7 @@ pluggy==0.13.1
 prompt-toolkit==3.0.14
 ptyprocess==0.7.0
 py==1.10.0
-Pygments==2.7.4
+Pygments==2.19.2
 PyJWT==2.4.0
 pyparsing==2.4.7
 pytest==6.2.2
